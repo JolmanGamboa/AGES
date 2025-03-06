@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 
 package tesis.ages;
 
 /**
  *
- * @author jolma
+ * @author jolman
  */
 public class AGES {
 
