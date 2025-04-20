@@ -40,7 +40,7 @@ CREATE TABLE Usuario (
 
 -- Tabla Ingreso: Registra los ingresos de productos asociados a compras.
 CREATE TABLE Ingreso (
-    IdIngreso INT AUTO_INCREMENT PRIMARY KEY,
+    IdIngreso INT,
     IdProducto INT NOT NULL,
     IdCompra INT NOT NULL,
     CONSTRAINT FK_Ingreso_Producto FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto) ON DELETE CASCADE,
@@ -49,7 +49,7 @@ CREATE TABLE Ingreso (
 
 -- Tabla Salida: Registra las salidas de productos relacionados con compras.
 CREATE TABLE Salida (
-    IdSalida INT AUTO_INCREMENT PRIMARY KEY,
+    IdSalida INT,
     IdProducto INT NOT NULL,
     IdVenta INT NOT NULL,
     CONSTRAINT FK_Salida_Producto FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto) ON DELETE CASCADE,
@@ -114,90 +114,90 @@ INSERT INTO Productos (Referencia, Nombre, Cantidad, Alerta, ValorUnitario) VALU
 -- Insertar 10 compras
 -- Compra 1
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (20, 10000, '2025-01-05');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (1, 1);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (1, 1, 1);
 
 -- Compra 2
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (15, 15000, '2025-01-10');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (10, 20000, '2025-01-10');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (2, 2);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (3, 3);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (2, 2, 2);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (2, 3, 3);
 
 -- Compra 3
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (25, 12500, '2025-01-15');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (15, 17500, '2025-01-15');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (4, 4);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (5, 5);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (3, 4, 4);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (3, 5, 5);
 
 -- Compra 4
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (30, 5000, '2025-02-01');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (10, 25000, '2025-02-01');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (6, 6);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (7, 7);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (4, 6, 6);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (4, 7, 7);
 
 -- Compra 5
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (5, 35000, '2025-02-10');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (20, 15000, '2025-02-10');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (8, 8);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (9, 9);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (5, 8, 8);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (5, 9, 9);
 
 -- Compra 6
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (8, 45000, '2025-02-15');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (50, 7500, '2025-02-15');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (10, 10);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (11, 11);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (6, 10, 10);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (6, 11, 11);
 
 -- Compra 7
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (30, 5000, '2025-03-01');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (20, 6500, '2025-03-01');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (12, 12);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (13, 13);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (7, 12, 12);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (7, 13, 13);
 
 -- Compra 8
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (10, 80000, '2025-03-10');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (5, 105000, '2025-03-10');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (14, 14);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (15, 15);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (8, 14, 14);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (8, 15, 15);
 
 -- Compra 9
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (8, 50000, '2025-03-15');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (5, 70000, '2025-03-15');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (16, 16);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (17, 17);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (9, 16, 16);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (9, 17, 17);
 
 -- Compra 10
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (100, 2500, '2025-04-01');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (50, 6500, '2025-04-01');
 INSERT INTO Compra (Cantidad, ValorUnitario, Fecha) VALUES (200, 1500, '2025-04-01');
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (18, 18);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (19, 19);
-INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (20, 20);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (10, 18, 18);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (10, 19, 19);
+INSERT INTO Ingreso (IdProducto, IdCompra) VALUES (10, 20, 20);
 
 -- Insertar 10 ventas
 -- Venta 1 (3 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (5, '2025-01-20');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (3, '2025-01-20');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (2, '2025-01-20');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (1, 1);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (3, 2);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (5, 3);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (1, 1, 1);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (1, 3, 2);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (1, 5, 3);
 
 -- Venta 2 (4 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (10, '2025-01-25');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (5, '2025-01-25');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (8, '2025-01-25');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (2, '2025-01-25');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (2, 4);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (4, 5);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (6, 6);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 7);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (2, 2, 4);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (2, 4, 5);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (2, 6, 6);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (2, 8, 7);
 
 -- Venta 3 (3 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (15, '2025-02-05');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (3, '2025-02-05');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (1, '2025-02-05');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (7, 8);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 9);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (11, 10);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (3, 7, 8);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (3, 9, 9);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (3, 11, 10);
 
 -- Venta 4 (5 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (20, '2025-02-10');
@@ -205,29 +205,29 @@ INSERT INTO Venta (Cantidad, Fecha) VALUES (10, '2025-02-10');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (5, '2025-02-10');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (3, '2025-02-10');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (2, '2025-02-10');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (10, 11);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (12, 12);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (14, 13);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (16, 14);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (18, 15);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (4, 10, 11);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (4, 12, 12);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (4, 14, 13);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (4, 16, 14);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (4, 18, 15);
 
 -- Venta 5 (4 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (8, '2025-02-15');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (4, '2025-02-15');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (6, '2025-02-15');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (10, '2025-02-15');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (13, 16);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (15, 17);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (17, 18);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (19, 19);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (5, 13, 16);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (5, 15, 17);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (5, 17, 18);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (5, 19, 19);
 
 -- Venta 6 (3 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (12, '2025-03-01');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (5, '2025-03-01');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (3, '2025-03-01');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (1, 20);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (5, 21);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (20, 22);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (6, 1, 20);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (6, 5, 21);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (6, 20, 22);
 
 -- Venta 7 (5 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (7, '2025-03-10');
@@ -235,29 +235,29 @@ INSERT INTO Venta (Cantidad, Fecha) VALUES (9, '2025-03-10');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (2, '2025-03-10');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (4, '2025-03-10');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (1, '2025-03-10');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (3, 23);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (7, 24);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (11, 25);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (15, 26);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (19, 27);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (7, 3, 23);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (7, 7, 24);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (7, 11, 25);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (7, 15, 26);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (7, 19, 27);
 
 -- Venta 8 (4 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (15, '2025-03-15');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (8, '2025-03-15');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (6, '2025-03-15');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (3, '2025-03-15');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (2, 28);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (6, 29);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (10, 30);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (14, 31);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 2, 28);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 6, 29);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 10, 30);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 14, 31);
 
 -- Venta 9 (3 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (10, '2025-04-01');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (5, '2025-04-01');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (2, '2025-04-01');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (4, 32);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 33);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (12, 34);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 4, 32);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 8, 33);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (8, 12, 34);
 
 -- Venta 10 (5 productos)
 INSERT INTO Venta (Cantidad, Fecha) VALUES (20, '2025-04-05');
@@ -265,11 +265,11 @@ INSERT INTO Venta (Cantidad, Fecha) VALUES (10, '2025-04-05');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (15, '2025-04-05');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (5, '2025-04-05');
 INSERT INTO Venta (Cantidad, Fecha) VALUES (8, '2025-04-05');
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 35);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (13, 36);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (17, 37);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (18, 38);
-INSERT INTO Salida (IdProducto, IdVenta) VALUES (20, 39);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 9, 35);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 13, 36);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 17, 37);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 18, 38);
+INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 20, 39);
 
 -- TRIGGERS
 -- Trigger para incrementar la cantidad al realizar una compra y disminuir en venta
@@ -359,3 +359,6 @@ DELIMITER ;
 
 -- Ejemplo de cambio de contraseña ('usuario', 'clave antigua', 'nueva clave')
 CALL spUsuariosSetPassword('admin', 'admin', 'admin123');
+
+
+
