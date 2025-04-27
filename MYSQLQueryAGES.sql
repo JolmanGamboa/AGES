@@ -23,7 +23,6 @@ CREATE TABLE Productos (
 
 -- Tabla CompraProducto: Registra información sobre las compras realizadas.
 CREATE TABLE Compra (
-CREATE TABLE Compra (
     IdCompra INT AUTO_INCREMENT PRIMARY KEY,
     Cantidad INT NOT NULL,
     ValorUnitario INT NOT NULL,
@@ -35,12 +34,12 @@ CREATE TABLE Compra (
 
 -- Tabla VentaProducto: Registra información sobre las ventas realizadas.
 CREATE TABLE Venta (
-CREATE TABLE Venta (
     IdVenta INT AUTO_INCREMENT PRIMARY KEY,
     Cantidad INT NOT NULL,
 	Fecha DATETIME NOT NULL	
     Cantidad INT NOT NULL,
-	Fecha DATETIME NOT NULL	
+	Fecha DATETIME NOT NULL,
+	PrecioVenta INT
 );
 
 -- Tabla Usuario: Contiene los usuarios para gestionar el inicio de sesión.
@@ -69,23 +68,7 @@ CREATE TABLE Salida (
     CONSTRAINT FK_Salida_Venta FOREIGN KEY (IdVenta) REFERENCES Venta(IdVenta) ON DELETE CASCADE
 );
 
--- Tabla Ingreso: Registra los ingresos de productos asociados a compras.
-CREATE TABLE Ingreso (
-    IdIngreso INT,
-    IdProducto INT NOT NULL,
-    IdCompra INT NOT NULL,
-    CONSTRAINT FK_Ingreso_Producto FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto) ON DELETE CASCADE,
-    CONSTRAINT FK_Ingreso_Compra FOREIGN KEY (IdCompra) REFERENCES Compra(IdCompra) ON DELETE CASCADE
-);
 
--- Tabla Salida: Registra las salidas de productos relacionados con compras.
-CREATE TABLE Salida (
-    IdSalida INT,
-    IdProducto INT NOT NULL,
-    IdVenta INT NOT NULL,
-    CONSTRAINT FK_Salida_Producto FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto) ON DELETE CASCADE,
-    CONSTRAINT FK_Salida_Venta FOREIGN KEY (IdVenta) REFERENCES Venta(IdVenta) ON DELETE CASCADE
-);
 
 -- ALTER TABLE VentaProducto
 -- ADD CONSTRAINT chk_PrecioVentaMayorBase 
