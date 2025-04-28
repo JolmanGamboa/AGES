@@ -11,12 +11,7 @@ CREATE TABLE Productos (
     Cantidad INT NOT NULL ,
 	Alerta INT NOT NULL,
     ValorUnitario INT NOT NULL,
-    CONSTRAINT chk_cantidad CHECK (Cantidad >= 0)
-	Referencia VARCHAR(50) NOT NULL,
-	Nombre VARCHAR(50) NOT NULL,
-    Cantidad INT NOT NULL ,
-	Alerta INT NOT NULL,
-    ValorUnitario INT NOT NULL,
+    eliminado bool,
     CONSTRAINT chk_cantidad CHECK (Cantidad >= 0)
 );
 
@@ -27,9 +22,6 @@ CREATE TABLE Compra (
     Cantidad INT NOT NULL,
     ValorUnitario INT NOT NULL,
 	Fecha DATETIME NOT NULL
-    Cantidad INT NOT NULL,
-    ValorUnitario INT NOT NULL,
-	Fecha DATETIME NOT NULL
 );
 
 -- Tabla VentaProducto: Registra información sobre las ventas realizadas.
@@ -37,9 +29,6 @@ CREATE TABLE Venta (
     IdVenta INT AUTO_INCREMENT PRIMARY KEY,
     Cantidad INT NOT NULL,
 	Fecha DATETIME NOT NULL	
-    Cantidad INT NOT NULL,
-	Fecha DATETIME NOT NULL,
-	PrecioVenta INT
 );
 
 -- Tabla Usuario: Contiene los usuarios para gestionar el inicio de sesión.
@@ -481,13 +470,33 @@ INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 20, 39);
 -- Trigger para incrementar la cantidad al realizar una compra y disminuir en venta
 DELIMITER //
 
+CREATE TRIGGER trg_ValidarReferenciaAntesInsert
+BEFORE INSERT ON Productos
+FOR EACH ROW
+BEGIN
+    DECLARE v_ExisteReferencia INT;
+
+    -- Verificar si ya existe una referencia igual
+    SELECT COUNT(*) INTO v_ExisteReferencia
+    FROM Productos
+    WHERE Referencia = NEW.Referencia;
+
+    -- Si existe, lanzar un error
+    IF v_ExisteReferencia > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Ya hay un producto con esa referencia, validar información';
+    END IF;
+END;
+//
+
+DELIMITER ;
+DELIMITER //
+
 CREATE TRIGGER trg_AfterInsertIngreso
 AFTER INSERT ON Ingreso
 FOR EACH ROW
 BEGIN
     UPDATE Productos
-    SET Cantidad = Cantidad + 
-        (SELECT Cantidad FROM Compra WHERE IdCompra = NEW.IdCompra)
     SET Cantidad = Cantidad + 
         (SELECT Cantidad FROM Compra WHERE IdCompra = NEW.IdCompra)
     WHERE IdProducto = NEW.IdProducto;
@@ -503,8 +512,6 @@ AFTER INSERT ON Salida
 FOR EACH ROW
 BEGIN
     UPDATE Productos
-    SET Cantidad = Cantidad - 
-        (SELECT Cantidad FROM Venta WHERE IdVenta = NEW.IdVenta)
     SET Cantidad = Cantidad - 
         (SELECT Cantidad FROM Venta WHERE IdVenta = NEW.IdVenta)
     WHERE IdProducto = NEW.IdProducto;
