@@ -4,6 +4,9 @@
  */
 package tesis.ages.Ventanas;
 
+import Controladores.NotificacionesController;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jolma
@@ -19,6 +22,29 @@ public class frmNotificaciones extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        
+        // Inicializar la instancia estática
+        fn = this;
+        
+        // Cargar las notificaciones
+        cargarNotificaciones();
+    }
+
+    private void cargarNotificaciones() {
+        NotificacionesController notificacionesController = new NotificacionesController();
+        java.util.List<String> notificaciones = notificacionesController.obtenerNotificaciones();
+        
+        // Limpiar el área de texto
+        jTextAreaNotificaciones.setText("");
+        
+        if (notificaciones.isEmpty()) {
+            jTextAreaNotificaciones.setText("No hay productos con bajo stock.");
+        } else {
+            // Mostrar cada notificación en una nueva línea
+            for (String notificacion : notificaciones) {
+                jTextAreaNotificaciones.append(notificacion + "\n\n");
+            }
+        }
     }
 
     /**
@@ -39,6 +65,9 @@ public class frmNotificaciones extends javax.swing.JDialog {
         jBtoReporte = new javax.swing.JButton();
         jBtoNotificaciones = new javax.swing.JButton();
         jBtoProducto = new javax.swing.JButton();
+        jBtoActualizar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextAreaNotificaciones = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -129,17 +158,45 @@ public class frmNotificaciones extends javax.swing.JDialog {
                 .addComponent(jBtoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jBtoActualizar.setBackground(new java.awt.Color(0, 153, 204));
+        jBtoActualizar.setText("Actualizar");
+        jBtoActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jBtoActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtoActualizarActionPerformed(evt);
+            }
+        });
+
+        jTextAreaNotificaciones.setColumns(20);
+        jTextAreaNotificaciones.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaNotificaciones);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jBtoActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(106, 106, 106)))
+                .addGap(16, 16, 16))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 193, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBtoActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, 230));
@@ -192,6 +249,10 @@ public class frmNotificaciones extends javax.swing.JDialog {
         fc.setVisible(true);
     }//GEN-LAST:event_jBtoCompraActionPerformed
 
+    private void jBtoActualizarActionPerformed(java.awt.event.ActionEvent evt) {
+        cargarNotificaciones();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -242,6 +303,7 @@ public class frmNotificaciones extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBtoActualizar;
     private javax.swing.JButton jBtoCompra;
     private javax.swing.JButton jBtoNotificaciones;
     private javax.swing.JButton jBtoProducto;
@@ -251,5 +313,7 @@ public class frmNotificaciones extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextAreaNotificaciones;
     // End of variables declaration//GEN-END:variables
 }

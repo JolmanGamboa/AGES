@@ -22,19 +22,20 @@ public class ProductoController {
 
     public Object[][] getDatosProductos() {
         List<Object[]> filas = new ArrayList<>();
-        String sql = "SELECT IdProducto, Referencia, Nombre, Cantidad, Alerta, ValorUnitario FROM Productos ORDER BY IdProducto";
+        String sql = "SELECT IdProducto, Referencia, Nombre, Cantidad, Alerta, ValorUnitario, eliminado FROM Productos ORDER BY IdProducto";
         
         try (PreparedStatement pstmt = conexion.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             
             while (rs.next()) {
-                Object[] fila = new Object[6];
+                Object[] fila = new Object[7];
                 fila[0] = rs.getInt("IdProducto");
                 fila[1] = rs.getString("Referencia");
                 fila[2] = rs.getString("Nombre");
                 fila[3] = rs.getInt("Cantidad");
                 fila[4] = rs.getInt("Alerta");
                 fila[5] = rs.getInt("ValorUnitario");
+                fila[6] = rs.getBoolean("eliminado");
                 filas.add(fila);
             }
             
@@ -47,7 +48,7 @@ public class ProductoController {
     }
     
     public String[] getNombresColumnas() {
-        return new String[]{"ID", "Referencia", "Nombre", "Cantidad", "Alerta", "Valor Unitario"};
+        return new String[]{"ID", "Referencia", "Nombre", "Cantidad", "Alerta", "Valor Unitario", "Eliminado"};
     }
     
     public boolean insertarProducto(String referencia, String nombre, int cantidad, int alerta, int valorUnitario) {
@@ -105,28 +106,41 @@ public class ProductoController {
         }
     }
     
-    public boolean eliminarProducto(int idProducto) {
-        String sql = "DELETE FROM Productos WHERE IdProducto = ?";
-        
-        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idProducto);
+    public boolean eliminarProducto(int id) {
+        try {
+            // Obtener el estado actual del producto
+            String sqlEstado = "SELECT eliminado FROM productos WHERE IdProducto = ?";
+            PreparedStatement pstEstado = conexion.prepareStatement(sqlEstado);
+            pstEstado.setInt(1, id);
+            ResultSet rs = pstEstado.executeQuery();
             
-            int filasAfectadas = pstmt.executeUpdate();
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Producto eliminado exitosamente", 
-                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                return true;
+            if (rs.next()) {
+                boolean estadoActual = rs.getBoolean("eliminado");
+                boolean nuevoEstado = !estadoActual;
+                
+                // Actualizar el estado
+                String sql = "UPDATE productos SET eliminado = ? WHERE IdProducto = ?";
+                PreparedStatement pst = conexion.prepareStatement(sql);
+                pst.setBoolean(1, nuevoEstado);
+                pst.setInt(2, id);
+                
+                int filasAfectadas = pst.executeUpdate();
+                
+                if (filasAfectadas > 0) {
+                    if (nuevoEstado) {
+                        JOptionPane.showMessageDialog(null, "El producto se eliminó correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El producto se restauró correctamente");
+                    }
+                    return true;
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el producto con el ID especificado", 
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
+                JOptionPane.showMessageDialog(null, "No se encontró el producto con ID: " + id);
             }
-            
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar el producto: " + e.getMessage(), 
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
+            JOptionPane.showMessageDialog(null, "Error al actualizar el estado del producto: " + e.getMessage());
         }
+        return false;
     }
     
     public Object[] buscarProducto(int idProducto) {

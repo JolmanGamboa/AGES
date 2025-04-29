@@ -4,6 +4,11 @@
  */
 package tesis.ages.Ventanas;
 
+import com.toedter.calendar.JDateChooser;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import Controladores.ReportesController;
+
 /**
  *
  * @author jolma
@@ -15,8 +20,19 @@ public class frmReporte extends javax.swing.JDialog {
     public static frmVenta fv;
     public static frmReporte fr;
     public static frmNotificaciones fn;
+    private JDateChooser jDateFechaInicio;
+    private JDateChooser jDateFechaFin;
+
     public frmReporte(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        
+        // Inicializar los campos de fecha antes del diseño
+        jDateFechaInicio = new JDateChooser();
+        jDateFechaInicio.setDateFormatString("dd/MM/yyyy");
+        
+        jDateFechaFin = new JDateChooser();
+        jDateFechaFin.setDateFormatString("dd/MM/yyyy");
+        
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -31,6 +47,7 @@ public class frmReporte extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -39,8 +56,17 @@ public class frmReporte extends javax.swing.JDialog {
         jBtoReporte = new javax.swing.JButton();
         jBtoNotificaciones = new javax.swing.JButton();
         jBtoProducto = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBoxProductos = new javax.swing.JCheckBox();
+        jTextFechaInicio = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTextFechaFin = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jCheckBoxCompras = new javax.swing.JCheckBox();
+        jCheckBoxVentas = new javax.swing.JCheckBox();
+        jBtoConfirmar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+
+        jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("IReporte");
@@ -130,10 +156,39 @@ public class frmReporte extends javax.swing.JDialog {
                 .addComponent(jBtoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jCheckBox1.setText("jCheckBox1");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxProductos.setText("Productos en Stock");
+        jCheckBoxProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                jCheckBoxProductosActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("Fecha Inicio");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("Fecha Fin");
+
+        jCheckBoxCompras.setText("Compras");
+        jCheckBoxCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxComprasActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxVentas.setText("Ventas");
+        jCheckBoxVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxVentasActionPerformed(evt);
+            }
+        });
+
+        jBtoConfirmar.setBackground(new java.awt.Color(0, 153, 204));
+        jBtoConfirmar.setText("Confirmar");
+        jBtoConfirmar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jBtoConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtoConfirmarActionPerformed(evt);
             }
         });
 
@@ -145,20 +200,55 @@ public class frmReporte extends javax.swing.JDialog {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(jCheckBox1)
+                .addGap(68, 68, 68)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxCompras)
+                            .addComponent(jCheckBoxProductos))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jCheckBoxVentas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jBtoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(99, 99, 99))))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(28, 28, 28)
+                        .addComponent(jDateFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(28, 28, 28)
+                        .addComponent(jDateFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
-                .addComponent(jCheckBox1)
-                .addGap(48, 48, 48))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jDateFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jDateFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(jCheckBoxCompras)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxVentas)
+                    .addComponent(jBtoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBoxProductos)
+                .addGap(28, 28, 28))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, 230));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, 280));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 36)); // NOI18N
         jLabel1.setText("A.G.E.S.");
@@ -172,7 +262,7 @@ public class frmReporte extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
         );
 
         pack();
@@ -208,9 +298,74 @@ public class frmReporte extends javax.swing.JDialog {
         fc.setVisible(true);
     }//GEN-LAST:event_jBtoCompraActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void jCheckBoxProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxProductosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    }//GEN-LAST:event_jCheckBoxProductosActionPerformed
+
+    private void jCheckBoxComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxComprasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxComprasActionPerformed
+
+    private void jCheckBoxVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxVentasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxVentasActionPerformed
+
+    private void jBtoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {
+        // Validar fechas
+        if (jDateFechaInicio.getDate() == null || jDateFechaFin.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione ambas fechas");
+            return;
+        }
+
+        if (jDateFechaFin.getDate().before(jDateFechaInicio.getDate())) {
+            JOptionPane.showMessageDialog(this, "La fecha final debe ser mayor o igual a la fecha inicial");
+            return;
+        }
+
+        // Validar que al menos una opción esté seleccionada
+        if (!jCheckBoxCompras.isSelected() && !jCheckBoxVentas.isSelected() && !jCheckBoxProductos.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione al menos una opción");
+            return;
+        }
+
+        ReportesController controller = new ReportesController();
+        String rutaArchivo = controller.seleccionarRutaArchivo();
+        
+        if (rutaArchivo == null) {
+            return; // Usuario canceló la selección
+        }
+
+        try {
+            if (jCheckBoxProductos.isSelected()) {
+                controller.generarReporteProductos(rutaArchivo);
+                rutaArchivo = rutaArchivo.replace(".csv", "_productos.csv");
+            }
+            
+            if (jCheckBoxCompras.isSelected()) {
+                controller.generarReporteCompras(jDateFechaInicio.getDate(), jDateFechaFin.getDate(), 
+                    rutaArchivo.replace(".csv", "_compras.csv"));
+            }
+            
+            if (jCheckBoxVentas.isSelected()) {
+                controller.generarReporteVentas(jDateFechaInicio.getDate(), jDateFechaFin.getDate(), 
+                    rutaArchivo.replace(".csv", "_ventas.csv"));
+            }
+
+            JOptionPane.showMessageDialog(this, "Reportes generados exitosamente");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar reportes: " + e.getMessage());
+        }
+    }
+
+    // Método para obtener la fecha de inicio
+    public Date getFechaInicio() {
+        return jDateFechaInicio.getDate();
+    }
+
+    // Método para obtener la fecha de fin
+    public Date getFechaFin() {
+        return jDateFechaFin.getDate();
+    }
 
     /**
      * @param args the command line arguments
@@ -263,14 +418,22 @@ public class frmReporte extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtoCompra;
+    private javax.swing.JButton jBtoConfirmar;
     private javax.swing.JButton jBtoNotificaciones;
     private javax.swing.JButton jBtoProducto;
     private javax.swing.JButton jBtoReporte;
     private javax.swing.JButton jBtoVenta;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBoxCompras;
+    private javax.swing.JCheckBox jCheckBoxProductos;
+    private javax.swing.JCheckBox jCheckBoxVentas;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField jTextFechaFin;
+    private javax.swing.JTextField jTextFechaInicio;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

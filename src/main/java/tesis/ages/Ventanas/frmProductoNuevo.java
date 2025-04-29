@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
+
 package tesis.ages.Ventanas;
 
 import Controladores.ProductoController;
@@ -204,7 +201,6 @@ public class frmProductoNuevo extends javax.swing.JDialog {
             frmProducto.fp.actualizarTabla();
         }
         
-        dispose();
     }                                            
 
     private void jBtoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtoCancelarActionPerformed
