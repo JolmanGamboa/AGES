@@ -470,6 +470,25 @@ INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 20, 39);
 -- Trigger para incrementar la cantidad al realizar una compra y disminuir en venta
 DELIMITER //
 
+CREATE TRIGGER trg_BeforeInsertOrUpdateUsuario
+BEFORE INSERT ON Usuario
+FOR EACH ROW
+BEGIN
+    -- Convertir el usuario a minúsculas
+    SET NEW.Usuario = LOWER(NEW.Usuario);
+
+    -- Verificar si ya existe un usuario igual
+    IF (SELECT COUNT(*) FROM Usuario WHERE LOWER(Usuario) = NEW.Usuario) > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El nombre de usuario ya existe. Ingrese uno diferente.';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
 CREATE TRIGGER trg_ValidarReferenciaAntesInsert
 BEFORE INSERT ON Productos
 FOR EACH ROW
@@ -490,6 +509,7 @@ END;
 //
 
 DELIMITER ;
+
 DELIMITER //
 
 CREATE TRIGGER trg_AfterInsertIngreso
@@ -540,12 +560,6 @@ BEGIN
     VALUES (p_Usuario, @PasswordHash, p_Cargo);
 END //
 
-    -- Cifrar la contraseña con SHA2 (equivalente a SHA256 en MySQL)
-    SET @PasswordHash = SHA2(p_Contraseña, 256);
-    
-    INSERT INTO Usuario (Usuario, Contraseña, Cargo)
-    VALUES (p_Usuario, @PasswordHash, p_Cargo);
-END //
 
 
 DELIMITER ;
