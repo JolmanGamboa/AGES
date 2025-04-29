@@ -11,23 +11,14 @@ CREATE TABLE Productos (
     Cantidad INT NOT NULL ,
 	Alerta INT NOT NULL,
     ValorUnitario INT NOT NULL,
-    CONSTRAINT chk_cantidad CHECK (Cantidad >= 0)
-	Referencia VARCHAR(50) NOT NULL,
-	Nombre VARCHAR(50) NOT NULL,
-    Cantidad INT NOT NULL ,
-	Alerta INT NOT NULL,
-    ValorUnitario INT NOT NULL,
+    eliminado bool,
     CONSTRAINT chk_cantidad CHECK (Cantidad >= 0)
 );
 
 
 -- Tabla CompraProducto: Registra información sobre las compras realizadas.
 CREATE TABLE Compra (
-CREATE TABLE Compra (
     IdCompra INT AUTO_INCREMENT PRIMARY KEY,
-    Cantidad INT NOT NULL,
-    ValorUnitario INT NOT NULL,
-	Fecha DATETIME NOT NULL
     Cantidad INT NOT NULL,
     ValorUnitario INT NOT NULL,
 	Fecha DATETIME NOT NULL
@@ -35,10 +26,7 @@ CREATE TABLE Compra (
 
 -- Tabla VentaProducto: Registra información sobre las ventas realizadas.
 CREATE TABLE Venta (
-CREATE TABLE Venta (
     IdVenta INT AUTO_INCREMENT PRIMARY KEY,
-    Cantidad INT NOT NULL,
-	Fecha DATETIME NOT NULL	
     Cantidad INT NOT NULL,
 	Fecha DATETIME NOT NULL	
 );
@@ -69,23 +57,7 @@ CREATE TABLE Salida (
     CONSTRAINT FK_Salida_Venta FOREIGN KEY (IdVenta) REFERENCES Venta(IdVenta) ON DELETE CASCADE
 );
 
--- Tabla Ingreso: Registra los ingresos de productos asociados a compras.
-CREATE TABLE Ingreso (
-    IdIngreso INT,
-    IdProducto INT NOT NULL,
-    IdCompra INT NOT NULL,
-    CONSTRAINT FK_Ingreso_Producto FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto) ON DELETE CASCADE,
-    CONSTRAINT FK_Ingreso_Compra FOREIGN KEY (IdCompra) REFERENCES Compra(IdCompra) ON DELETE CASCADE
-);
 
--- Tabla Salida: Registra las salidas de productos relacionados con compras.
-CREATE TABLE Salida (
-    IdSalida INT,
-    IdProducto INT NOT NULL,
-    IdVenta INT NOT NULL,
-    CONSTRAINT FK_Salida_Producto FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto) ON DELETE CASCADE,
-    CONSTRAINT FK_Salida_Venta FOREIGN KEY (IdVenta) REFERENCES Venta(IdVenta) ON DELETE CASCADE
-);
 
 -- ALTER TABLE VentaProducto
 -- ADD CONSTRAINT chk_PrecioVentaMayorBase 
@@ -498,13 +470,53 @@ INSERT INTO Salida (IdProducto, IdVenta) VALUES (9, 20, 39);
 -- Trigger para incrementar la cantidad al realizar una compra y disminuir en venta
 DELIMITER //
 
+CREATE TRIGGER trg_BeforeInsertOrUpdateUsuario
+BEFORE INSERT ON Usuario
+FOR EACH ROW
+BEGIN
+    -- Convertir el usuario a minúsculas
+    SET NEW.Usuario = LOWER(NEW.Usuario);
+
+    -- Verificar si ya existe un usuario igual
+    IF (SELECT COUNT(*) FROM Usuario WHERE LOWER(Usuario) = NEW.Usuario) > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El nombre de usuario ya existe. Ingrese uno diferente.';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trg_ValidarReferenciaAntesInsert
+BEFORE INSERT ON Productos
+FOR EACH ROW
+BEGIN
+    DECLARE v_ExisteReferencia INT;
+
+    -- Verificar si ya existe una referencia igual
+    SELECT COUNT(*) INTO v_ExisteReferencia
+    FROM Productos
+    WHERE Referencia = NEW.Referencia;
+
+    -- Si existe, lanzar un error
+    IF v_ExisteReferencia > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Ya hay un producto con esa referencia, validar información';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
 CREATE TRIGGER trg_AfterInsertIngreso
 AFTER INSERT ON Ingreso
 FOR EACH ROW
 BEGIN
     UPDATE Productos
-    SET Cantidad = Cantidad + 
-        (SELECT Cantidad FROM Compra WHERE IdCompra = NEW.IdCompra)
     SET Cantidad = Cantidad + 
         (SELECT Cantidad FROM Compra WHERE IdCompra = NEW.IdCompra)
     WHERE IdProducto = NEW.IdProducto;
@@ -522,8 +534,6 @@ BEGIN
     UPDATE Productos
     SET Cantidad = Cantidad - 
         (SELECT Cantidad FROM Venta WHERE IdVenta = NEW.IdVenta)
-    SET Cantidad = Cantidad - 
-        (SELECT Cantidad FROM Venta WHERE IdVenta = NEW.IdVenta)
     WHERE IdProducto = NEW.IdProducto;
 END;
 
@@ -550,12 +560,6 @@ BEGIN
     VALUES (p_Usuario, @PasswordHash, p_Cargo);
 END //
 
-    -- Cifrar la contraseña con SHA2 (equivalente a SHA256 en MySQL)
-    SET @PasswordHash = SHA2(p_Contraseña, 256);
-    
-    INSERT INTO Usuario (Usuario, Contraseña, Cargo)
-    VALUES (p_Usuario, @PasswordHash, p_Cargo);
-END //
 
 
 DELIMITER ;
