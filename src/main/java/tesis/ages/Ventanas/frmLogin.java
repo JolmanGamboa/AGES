@@ -80,9 +80,9 @@ public class frmLogin extends javax.swing.JDialog {
         jPassword.setText("jPasswordField1");
         jPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tesis/ages/Imagenes/bloquear-32x32.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("tesis/ages/Imagenes/bloquear-32x32.png"))); // NOI18N
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tesis/ages/Imagenes/usuario-32x32.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("tesis/ages/Imagenes/usuario-32x32.png"))); // NOI18N
 
         jBtoRegistro.setBackground(new java.awt.Color(0, 153, 204));
         jBtoRegistro.setText("Registro");
