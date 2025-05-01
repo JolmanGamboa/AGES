@@ -1,12 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package tesis.ages.Ventanas;
 
 import com.toedter.calendar.JDateChooser;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import java.sql.SQLException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import Controladores.ReportesController;
 
 /**
@@ -311,49 +310,53 @@ public class frmReporte extends javax.swing.JDialog {
     }//GEN-LAST:event_jCheckBoxVentasActionPerformed
 
     private void jBtoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {
-        // Validar fechas
-        if (jDateFechaInicio.getDate() == null || jDateFechaFin.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Por favor seleccione ambas fechas");
-            return;
-        }
-
-        if (jDateFechaFin.getDate().before(jDateFechaInicio.getDate())) {
-            JOptionPane.showMessageDialog(this, "La fecha final debe ser mayor o igual a la fecha inicial");
-            return;
-        }
-
-        // Validar que al menos una opción esté seleccionada
-        if (!jCheckBoxCompras.isSelected() && !jCheckBoxVentas.isSelected() && !jCheckBoxProductos.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Por favor seleccione al menos una opción");
-            return;
-        }
-
-        ReportesController controller = new ReportesController();
-        String rutaArchivo = controller.seleccionarRutaArchivo();
-        
-        if (rutaArchivo == null) {
-            return; // Usuario canceló la selección
-        }
-
         try {
-            if (jCheckBoxProductos.isSelected()) {
-                controller.generarReporteProductos(rutaArchivo);
-                rutaArchivo = rutaArchivo.replace(".csv", "_productos.csv");
+            // Validar fechas
+            Date fechaInicio = jDateFechaInicio.getDate();
+            Date fechaFin = jDateFechaFin.getDate();
+            
+            if (fechaInicio == null || fechaFin == null) {
+                JOptionPane.showMessageDialog(this, "Por favor seleccione ambas fechas", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             
+            if (fechaFin.before(fechaInicio)) {
+                JOptionPane.showMessageDialog(this, "La fecha final debe ser mayor a la fecha inicial", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Validar que al menos un checkbox esté seleccionado
+            if (!jCheckBoxCompras.isSelected() && !jCheckBoxVentas.isSelected() && !jCheckBoxProductos.isSelected()) {
+                JOptionPane.showMessageDialog(this, "Por favor seleccione al menos un tipo de reporte", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            ReportesController controller = new ReportesController();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String fechaInicioStr = dateFormat.format(fechaInicio);
+            String fechaFinStr = dateFormat.format(fechaFin);
+            
+            // Generar reportes según los checkboxes seleccionados
             if (jCheckBoxCompras.isSelected()) {
-                controller.generarReporteCompras(jDateFechaInicio.getDate(), jDateFechaFin.getDate(), 
-                    rutaArchivo.replace(".csv", "_compras.csv"));
+                String rutaArchivo = "Reporte_Compras_" + fechaInicioStr + "_" + fechaFinStr + ".csv";
+                controller.generarReporteCompras(fechaInicio, fechaFin, rutaArchivo);
+                JOptionPane.showMessageDialog(this, "Reporte de compras generado: " + rutaArchivo);
             }
             
             if (jCheckBoxVentas.isSelected()) {
-                controller.generarReporteVentas(jDateFechaInicio.getDate(), jDateFechaFin.getDate(), 
-                    rutaArchivo.replace(".csv", "_ventas.csv"));
+                String rutaArchivo = "Reporte_Ventas_" + fechaInicioStr + "_" + fechaFinStr + ".csv";
+                controller.generarReporteVentas(fechaInicio, fechaFin, rutaArchivo);
+                JOptionPane.showMessageDialog(this, "Reporte de ventas generado: " + rutaArchivo);
             }
-
-            JOptionPane.showMessageDialog(this, "Reportes generados exitosamente");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al generar reportes: " + e.getMessage());
+            
+            if (jCheckBoxProductos.isSelected()) {
+                String rutaArchivo = "Reporte_Productos.csv";
+                controller.generarReporteProductos(rutaArchivo);
+                JOptionPane.showMessageDialog(this, "Reporte de productos generado: " + rutaArchivo);
+            }
+            
+        } catch (SQLException | IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al generar el reporte: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
