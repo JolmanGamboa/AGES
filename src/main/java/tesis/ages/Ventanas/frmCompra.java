@@ -4,6 +4,12 @@
  */
 package tesis.ages.Ventanas;
 
+import Controladores.CompraController;
+import com.toedter.calendar.JDateChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jolma
@@ -15,10 +21,45 @@ public class frmCompra extends javax.swing.JDialog {
     public static frmVenta fv;
     public static frmReporte fr;
     public static frmNotificaciones fn;
+    private JTable tablaProductos;
+    private CompraController compraController;
+    private DefaultTableModel modeloTabla;
+    private JDateChooser jDateFecha;
+    
     public frmCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        
+        // Inicializar el controlador
+        compraController = new CompraController();
+        
+        // Inicializar el JDateChooser con la fecha actual
+        jDateFecha = new JDateChooser();
+        jDateFecha.setDateFormatString("dd/MM/yyyy");
+        jDateFecha.setDate(new java.util.Date());
+        jDateFecha.setEnabled(false); // Deshabilitar la edición de la fecha
+        
+        // Agregar el JDateChooser al panel
+        jPanel2.add(jDateFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 200, 30));
+        
+        // Inicializar la tabla
+        inicializarTabla();
+    }
+
+    private void inicializarTabla() {
+        modeloTabla = new DefaultTableModel(compraController.getDatosTabla(), compraController.getNombresColumnas()) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tablaProductos = new JTable(modeloTabla);
+        jScrollPane1.setViewportView(tablaProductos);
+    }
+    
+    private void actualizarTabla() {
+        modeloTabla.setDataVector(compraController.getDatosTabla(), compraController.getNombresColumnas());
     }
 
     /**
@@ -54,7 +95,6 @@ public class frmCompra extends javax.swing.JDialog {
         jBtoConfirmar2 = new javax.swing.JButton();
         jBtoConfirmar3 = new javax.swing.JButton();
         jTextFactura4 = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -219,14 +259,12 @@ public class frmCompra extends javax.swing.JDialog {
             }
         });
 
+        jTextFactura4.setText("asd");
         jTextFactura4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFactura4ActionPerformed(evt);
             }
         });
-
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel11.setText("Fecha");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -251,10 +289,8 @@ public class frmCompra extends javax.swing.JDialog {
                         .addGap(44, 44, 44)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 892, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFactura4, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11))
-                        .addGap(131, 131, 131)
+                        .addComponent(jTextFactura4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(299, 299, 299)
                         .addComponent(jBtoConfirmar1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(53, 53, 53)
                         .addComponent(jBtoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,21 +325,16 @@ public class frmCompra extends javax.swing.JDialog {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(60, 60, 60)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jBtoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jBtoConfirmar2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jBtoConfirmar1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBtoConfirmar3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(12, 12, 12)
-                        .addComponent(jTextFactura4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jBtoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jBtoConfirmar2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jBtoConfirmar1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jBtoConfirmar3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(13, 13, 13)))
-                .addGap(0, 8, Short.MAX_VALUE))
+                        .addGap(75, 75, 75)
+                        .addComponent(jTextFactura4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 1150, 450));
@@ -372,21 +403,80 @@ public class frmCompra extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFactura3ActionPerformed
 
-    private void jBtoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtoConfirmarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBtoConfirmarActionPerformed
+    private void jBtoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {
+        String idStr = JOptionPane.showInputDialog("Ingrese el ID del producto a eliminar:");
+        if (idStr != null && !idStr.isEmpty()) {
+            try {
+                int id = Integer.parseInt(idStr);
+                compraController.eliminarProducto(id);
+                actualizarTabla();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El ID debe ser un número");
+            }
+        }
+    }
 
-    private void jBtoConfirmar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtoConfirmar1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBtoConfirmar1ActionPerformed
+    private void jBtoConfirmar1ActionPerformed(java.awt.event.ActionEvent evt) {
+        String numeroFactura = jTextFactura.getText().trim();
+        String referencia = jTextFactura1.getText().trim();
+        String cantidadStr = jTextFactura2.getText().trim();
+        String valorUnitarioStr = jTextFactura3.getText().trim();
+        
+        // Validar campos vacíos
+        if (numeroFactura.isEmpty() || referencia.isEmpty() || cantidadStr.isEmpty() || valorUnitarioStr.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
+            return;
+        }
+        
+        // Validar número de factura
+        if (!compraController.validarNumeroFactura(numeroFactura)) {
+            JOptionPane.showMessageDialog(null, "El número de factura debe ser un número positivo");
+            return;
+        }
+        
+        try {
+            int cantidad = Integer.parseInt(cantidadStr);
+            int valorUnitario = Integer.parseInt(valorUnitarioStr);
+            
+            if (cantidad <= 0 || valorUnitario <= 0) {
+                JOptionPane.showMessageDialog(null, "La cantidad y el valor unitario deben ser números positivos");
+                return;
+            }
+            
+            // Obtener la fecha actual
+            java.util.Date fechaActual = new java.util.Date();
+            
+            // Formatear fecha
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            String fecha = sdf.format(fechaActual);
+            
+            // Agregar producto a la tabla
+            compraController.agregarProductoATabla(numeroFactura, fecha, referencia, cantidad, valorUnitario);
+            actualizarTabla();
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "La cantidad y el valor unitario deben ser números");
+        }
+    }
 
-    private void jBtoConfirmar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtoConfirmar2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBtoConfirmar2ActionPerformed
+    private void jBtoConfirmar2ActionPerformed(java.awt.event.ActionEvent evt) {
+        compraController.limpiarTabla();
+        actualizarTabla();
+        jTextFactura.setText("");
+        jTextFactura1.setText("");
+        jTextFactura2.setText("");
+        jTextFactura3.setText("");
+    }
 
-    private void jBtoConfirmar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtoConfirmar3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBtoConfirmar3ActionPerformed
+    private void jBtoConfirmar3ActionPerformed(java.awt.event.ActionEvent evt) {
+        if (compraController.registrarCompra()) {
+            actualizarTabla();
+            jTextFactura.setText("");
+            jTextFactura1.setText("");
+            jTextFactura2.setText("");
+            jTextFactura3.setText("");
+        }
+    }
 
     private void jTextFactura4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFactura4ActionPerformed
         // TODO add your handling code here:
@@ -449,7 +539,6 @@ public class frmCompra extends javax.swing.JDialog {
     private javax.swing.JButton jBtoVenta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
