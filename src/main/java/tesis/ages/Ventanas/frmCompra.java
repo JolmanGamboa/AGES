@@ -242,7 +242,7 @@ public class frmCompra extends javax.swing.JDialog {
         });
 
         jBtoConfirmar2.setBackground(new java.awt.Color(0, 153, 204));
-        jBtoConfirmar2.setText("Cancelar Venta");
+        jBtoConfirmar2.setText("Cancelar compra");
         jBtoConfirmar2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jBtoConfirmar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -251,7 +251,7 @@ public class frmCompra extends javax.swing.JDialog {
         });
 
         jBtoConfirmar3.setBackground(new java.awt.Color(0, 153, 204));
-        jBtoConfirmar3.setText("Registrar venta");
+        jBtoConfirmar3.setText("Registrar compra");
         jBtoConfirmar3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jBtoConfirmar3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
