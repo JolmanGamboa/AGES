@@ -1,3 +1,3 @@
 @echo off
-java -jar ages.jar
+java -jar AGES-main.jar
 pause
